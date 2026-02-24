@@ -22,8 +22,20 @@ app.get("/webhook", (req, res) => {
 
 // Rota POST (receber mensagens)
 app.post("/webhook", (req, res) => {
-  console.log("Mensagem recebida:");
-  console.log(JSON.stringify(req.body, null, 2));
+  const body = req.body;
+
+  if (body.object) {
+    const message =
+      body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+
+    if (message) {
+      const from = message.from;
+      const text = message.text?.body;
+
+      console.log("Número:", from);
+      console.log("Mensagem:", text);
+    }
+  }
 
   res.sendStatus(200);
 });
@@ -33,4 +45,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
 
