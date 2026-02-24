@@ -15,6 +15,7 @@ app.get("/webhook", (req, res) => {
     console.log("Webhook verificado!");
     res.status(200).send(challenge);
   } else {
+    console.log("Falha na verificação do webhook");
     res.sendStatus(403);
   }
 });
@@ -32,3 +33,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
