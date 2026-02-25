@@ -38,69 +38,105 @@ app.get("/webhook", (req, res) => {
 // Rota POST (receber mensagens)
 app.post("/webhook", async (req, res) => {
   const body = req.body;
+  const message = body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
 
-  const message =
-    body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+  if (!message) return res.sendStatus(200);
 
-  if (message) {
-    const from = message.from;
-    const text = message.text?.body?.trim();
+  const from = message.from;
+  const text = message.text?.body?.trim();
+  const agora = Date.now();
 
-    const agora = Date.now();
+  if (!sessoes[from]) {
+    sessoes[from] = {
+      etapa: "menu_principal",
+      ultimaInteracao: agora,
+      etapaAnterior: null
+    };
+    await enviarMensagem(from, menuPrincipal());
+    return res.sendStatus(200);
+  }
 
-    // Criar sessão se não existir
-    if (!sessoes[from]) {
-      sessoes[from] = {
-        etapa: "menu",
-        ultimaInteracao: agora
-      };
-    }
+  const sessao = sessoes[from];
 
-    const sessao = sessoes[from];
-
-    // 🔄 Verifica expiração
-    if (agora - sessao.ultimaInteracao > TEMPO_EXPIRACAO) {
-      sessao.etapa = "menu";
-      await enviarMensagem(from, "Sessão reiniciada por inatividade ⏳");
-      await enviarMensagem(from, menuPrincipal());
-      sessao.ultimaInteracao = agora;
-      return res.sendStatus(200);
-    }
-
+  // ⏳ Expiração
+  if (agora - sessao.ultimaInteracao > TEMPO_EXPIRACAO) {
+    sessao.etapa = "menu_principal";
+    await enviarMensagem(from, "⏳ Sessão reiniciada por inatividade.");
+    await enviarMensagem(from, menuPrincipal());
     sessao.ultimaInteracao = agora;
+    return res.sendStatus(200);
+  }
 
-    // 📋 ETAPA MENU
-    if (sessao.etapa === "menu") {
+  sessao.ultimaInteracao = agora;
 
-      if (text === "1") {
-        await enviarMensagem(from, "📋 Aqui está nosso cardápio...");
-        await enviarMensagem(from, menuPrincipal());
-      }
-
-      else if (text === "2") {
-        await enviarMensagem(from, "Você escolheu Atendimento 👨‍💼");
-        await enviarMensagem(from, "Em breve você será atendido.");
-        
-        // Aqui poderia redirecionar para humano
-        
-        sessao.etapa = "aguardando_atendimento";
-      }
-
-      else if (text === "3") {
-        await enviarMensagem(from, "❓ Como podemos ajudar?");
-        await enviarMensagem(from, menuPrincipal());
-      }
-
-      else {
-        await enviarMensagem(from, menuPrincipal());
-      }
+  // 🔹 MENU PRINCIPAL
+  if (sessao.etapa === "menu_principal") {
+    if (text === "1") {
+      await enviarMensagem(from, mensagemCardapio());
+    } 
+    else if (text === "2") {
+      sessao.etapa = "submenu_atendimento";
+      await enviarMensagem(from, submenuAtendimento());
+    } 
+    else if (text === "3") {
+      sessao.etapa = "submenu_ajuda";
+      await enviarMensagem(from, submenuAjuda());
+    } 
+    else {
+      await enviarMensagem(from, menuPrincipal());
     }
+  }
 
-    // 👨‍💼 ETAPA ATENDIMENTO
-    else if (sessao.etapa === "aguardando_atendimento") {
-      await enviarMensagem(from, "Um atendente já foi acionado. Aguarde...");
+  // 🔹 SUBMENU ATENDIMENTO
+  else if (sessao.etapa === "submenu_atendimento") {
+    if (text === "1") {
+      await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/55XXXXXXXXX");
     }
+    else if (text === "2") {
+      await enviarMensagem(from, "📞 Clique para ligar: tel:+55XXXXXXXXX");
+    }
+    else if (text === "3") {
+      sessao.etapaAnterior = "submenu_atendimento";
+      sessao.etapa = "submenu_contatos";
+      await enviarMensagem(from, submenuContatos());
+    }
+    else if (text === "0") {
+      sessao.etapa = "menu_principal";
+      await enviarMensagem(from, menuPrincipal());
+    }
+    else {
+      await enviarMensagem(from, submenuAtendimento());
+    }
+  }
 
+  // 🔹 SUBMENU CONTATOS
+  else if (sessao.etapa === "submenu_contatos") {
+    if (text === "9") {
+      sessao.etapa = sessao.etapaAnterior;
+      await enviarMensagem(from, submenuAtendimento());
+    }
+    else if (text === "0") {
+      sessao.etapa = "menu_principal";
+      await enviarMensagem(from, menuPrincipal());
+    }
+    else {
+      await enviarMensagem(from, submenuContatos());
+    }
+  }
+
+  // 🔹 SUBMENU AJUDA
+  else if (sessao.etapa === "submenu_ajuda") {
+    if (text === "9") {
+      sessao.etapa = "menu_principal";
+      await enviarMensagem(from, menuPrincipal());
+    }
+    else if (text === "0") {
+      sessao.etapa = "menu_principal";
+      await enviarMensagem(from, menuPrincipal());
+    }
+    else {
+      await enviarMensagem(from, submenuAjuda());
+    }
   }
 
   res.sendStatus(200);
@@ -142,6 +178,69 @@ Para facilitar, escolha uma das opções abaixo digitando apenas o número corre
 `;
   
 }
+
+
+function mensagemCardapio() {
+  return `Você escolheu a opção *Cardápio* 🍕
+
+Segue o link para pedidos:
+👉 site.anota.ai/Serginhospizzaria
+
+Caso tenha dúvidas, volte ao menu principal e escolha a opção *3* para te ajudarmos 😊
+
+Digite:
+0️⃣ - Voltar ao menu principal`;
+}
+
+function submenuAtendimento() {
+  return `📞 *Escolha a forma de atendimento:*
+
+1️⃣ - WhatsApp (Mensagem de Texto)
+2️⃣ - Ligação
+3️⃣ - Outros Contatos
+
+Digite o número desejado
+0️⃣ - Voltar ao menu principal`;
+}
+
+function submenuContatos() {
+  return `📱 *Mais contatos de atendimento por ligação:*
+
+☎ Telefone Fixo: (XX) XXXX-XXXX
+📱 Celular: (XX) XXXXX-XXXX
+
+Digite:
+9️⃣ - Voltar ao menu anterior
+0️⃣ - Voltar ao menu principal`;
+}
+
+function submenuAjuda() {
+  return `🙋 *Primeira vez aqui?*
+
+📌 *Por que usamos atendimento automático?*
+Devido ao alto volume de pedidos por mensagens, o WhatsApp estava bloqueando nosso atendimento humano.
+Pensando em melhorar sua experiência, automatizamos este número via WhatsApp Oficial e disponibilizamos outros canais de atendimento caso prefira.
+
+📌 *Como fazer pedido pelo link?*
+• Ao clicar no link da opção 1, você será direcionado ao nosso cardápio online no Anota Aí  
+• Escolha a categoria desejada (Pizza, Lanche, Bebida…)  
+• Ao escolher Pizza, selecione o tamanho  
+• Escolha o sabor, adicionais e borda  
+• Pizza grande permite até dois sabores  
+• Finalize informando nome, telefone e endereço, caso seja entrega  
+
+🎁 *Programa Fidelidade*
+A cada 10 pedidos, no 11º você ganha 50% de desconto em uma pizza de qualquer sabor.
+Para resgatar, ao finalizar o 11º pedido aparecerá a opção de resgate.
+Para consultar seus pontos, volte ao menu principal e escolha a opção 2.
+
+Digite:
+9️⃣ - Voltar ao menu anterior
+0️⃣ - Voltar ao menu principal`;
+}
+
+
+
 
 
 
