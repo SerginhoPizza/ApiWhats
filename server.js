@@ -1,3 +1,6 @@
+const sessoes = {};
+const TEMPO_EXPIRACAO = 15 * 60 * 1000; // 15 minutos
+
 const axios = require("axios");
 
 const TOKEN = "EAARbTE5PR8MBQ5Tm0bCbmhBGyZCH9J9tiZBczF0zyQYkRucxaAhjL1wLWQlN1WJIZAq1yHe8gxlu8ZBJTZAhTQ9Fim8aZCQfTZBakI8sMPkTj2pjsB8T5Gy6ZBgv7UBtgNvwjTZCZBVlwtPoLCUjhDkzlZBbjhOzjZAR9JuRsmhG5XXYZAIZCQZBwuHFVpUCmVkbSS0EnOXm6I1A2WgAaj7wqQfxPyCDhUocNYorB1fxyq2AVPDk43MTZCPVUoOnJRKzBciiZB820R76FJcXjCS2qWfUQmvcchH9crgZDZD";
@@ -43,24 +46,61 @@ app.post("/webhook", async (req, res) => {
     const from = message.from;
     const text = message.text?.body?.trim();
 
-    console.log("Mensagem recebida:", text);
+    const agora = Date.now();
 
-    // Se for primeira mensagem ou texto diferente
-    if (!["1", "2", "3"].includes(text)) {
+    // Criar sessão se não existir
+    if (!sessoes[from]) {
+      sessoes[from] = {
+        etapa: "menu",
+        ultimaInteracao: agora
+      };
+    }
+
+    const sessao = sessoes[from];
+
+    // 🔄 Verifica expiração
+    if (agora - sessao.ultimaInteracao > TEMPO_EXPIRACAO) {
+      sessao.etapa = "menu";
+      await enviarMensagem(from, "Sessão reiniciada por inatividade ⏳");
       await enviarMensagem(from, menuPrincipal());
+      sessao.ultimaInteracao = agora;
+      return res.sendStatus(200);
     }
 
-    if (text === "1") {
-      await enviarMensagem(from, "Você escolheu Cardápio 📖. \n Segue o link: site.anota.ai/Serginhospizzaria");
+    sessao.ultimaInteracao = agora;
+
+    // 📋 ETAPA MENU
+    if (sessao.etapa === "menu") {
+
+      if (text === "1") {
+        await enviarMensagem(from, "📋 Aqui está nosso cardápio...");
+        await enviarMensagem(from, menuPrincipal());
+      }
+
+      else if (text === "2") {
+        await enviarMensagem(from, "Você escolheu Atendimento 👨‍💼");
+        await enviarMensagem(from, "Em breve você será atendido.");
+        
+        // Aqui poderia redirecionar para humano
+        
+        sessao.etapa = "aguardando_atendimento";
+      }
+
+      else if (text === "3") {
+        await enviarMensagem(from, "❓ Como podemos ajudar?");
+        await enviarMensagem(from, menuPrincipal());
+      }
+
+      else {
+        await enviarMensagem(from, menuPrincipal());
+      }
     }
 
-    if (text === "2") {
-      await enviarMensagem(from, "Você escolheu Falar com Atendente 👩🏼‍🦰. Escolha a forma como quer falar: 1️⃣ - 📲 Mensagem Whatsapp 2️⃣ - 📞 Ligação");
+    // 👨‍💼 ETAPA ATENDIMENTO
+    else if (sessao.etapa === "aguardando_atendimento") {
+      await enviarMensagem(from, "Um atendente já foi acionado. Aguarde...");
     }
 
-    if (text === "3") {
-      await enviarMensagem(from, "Você escolheu Ajuda 🫡. Escolha uma opção abaixo: 1️⃣ - Porque estamos usando um atendimento automático neste número?  2️⃣ - Como fazer pedido pelo link? Outras dúvidas ");
-    }
   }
 
   res.sendStatus(200);
@@ -102,6 +142,7 @@ Para facilitar, escolha uma das opções abaixo digitando apenas o número corre
 `;
   
 }
+
 
 
 
