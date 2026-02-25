@@ -3,7 +3,7 @@ const TEMPO_EXPIRACAO = 15 * 60 * 1000; // 15 minutos
 
 const axios = require("axios");
 
-const TOKEN = "EAARbTE5PR8MBQwUV1jQZA27sCk3v1UUFm401yKfEW0mF8s6C7SBliR4PmDTwjlab0ouxRUidhBndKtmDI7Y5JFexAwnK1Vj0L59TXMk75ZCamvB7fDqAJ4iU4vInC1gXc4n1GrKsyGrAMjzMmqOJoAIz8ebFA34xDAnAoRrTo3hqYoYUo7ZCU9IcOo72DOw29lKAMgtkpXEr1TpusSewGfnPwT6yeZCf9SEGiFaAZCJwmLZA38GM89OI4MAQBWYGezuTsp2O1f4mZAPcj23foUY4khl";
+const TOKEN = "EAARbTE5PR8MBQwWDDtKpozI9j2Y3CqEZBKZAD1BEC8IkEsLpFx2NB9LZBlKocljKJ87CV2ObgJxWpJ1tj2AaakZAu5vAqe9K2jwbsrD6XYI84XOqc8rXO0m81SyC4nNOVLPiZACMOvU6i3kMLjEIfxkriAaNYIyCXtNNjObOjZANbfPGN4w1m899gpzmHyi3Qd5NIfRMFB4Qvokn2ZAWGD5OpwyEaBpe86r4tOjwdimA14DObZBpnsosBzlmh9IyIzOZAabVuzhmtKXwYDy8PQE7SdURY";
 const PHONE_NUMBER_ID = "1066289309890791";
 
 const express = require("express");
@@ -238,6 +238,7 @@ Digite:
 9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
+
 
 
 
