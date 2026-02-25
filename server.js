@@ -93,7 +93,7 @@ app.post("/webhook", async (req, res) => {
       await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/5515991058622");
     }
     else if (text === "2") {
-      await enviarMensagem(from, "📞 Clique para ligar -> +5515996032207");
+      await enviarMensagem(from, "📞 Clique para ligar -> (15) 99603-2207");
     }
     else if (text === "3") {
       sessao.etapaAnterior = "submenu_atendimento";
@@ -238,6 +238,7 @@ Digite:
 9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
+
 
 
 
