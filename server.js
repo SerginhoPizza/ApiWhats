@@ -51,15 +51,15 @@ app.post("/webhook", async (req, res) => {
     }
 
     if (text === "1") {
-      await enviarMensagem(from, "Você escolheu Suporte 🛠️. Em breve um atendente falará com você.");
+      await enviarMensagem(from, "Você escolheu Cardápio 📖. \n Segue o link: site.anota.ai/Serginhospizzaria");
     }
 
     if (text === "2") {
-      await enviarMensagem(from, "Você escolheu Financeiro 💰. Como podemos ajudar?");
+      await enviarMensagem(from, "Você escolheu Falar com Atendente 👩🏼‍🦰. Escolha a forma como quer falar: 1️⃣ - 📲 Mensagem Whatsapp 2️⃣ - 📞 Ligação");
     }
 
     if (text === "3") {
-      await enviarMensagem(from, "Você escolheu Comercial 📈. Nossa equipe entrará em contato.");
+      await enviarMensagem(from, "Você escolheu Ajuda 🫡. Escolha uma opção abaixo: 1️⃣ - Porque estamos usando um atendimento automático neste número?  2️⃣ - Como fazer pedido pelo link? Outras dúvidas ");
     }
   }
 
@@ -102,6 +102,7 @@ Para facilitar, escolha uma das opções abaixo digitando apenas o número corre
 `;
   
 }
+
 
 
 
