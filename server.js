@@ -167,7 +167,7 @@ Que alegria ter você por aqui. Estamos prontos para preparar a melhor pizza par
 Faça seu pedido pelo nosso cardápio online, basta clicar no link abaixo:
 site.anota.ai/Serginhospizzaria
 
-Para mais opções, escolha um das opções abaixo:
+Caso não queira pedir pelo link, basta escolher uma das opções abaixo:
 
 1️⃣ - Falar com Atendente
 2️⃣ - Dúvidas! 
@@ -223,6 +223,7 @@ Digite:
 9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
+
 
 
 
