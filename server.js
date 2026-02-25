@@ -90,12 +90,7 @@ app.post("/webhook", async (req, res) => {
       await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/5515991058622");
     }
     else if (text === "2") {
-      await enviarMensagem(from, "📞 Clique para ligar -> tel:+5515996032207");
-    }
-    else if (text === "3") {
-      sessao.etapaAnterior = "submenu_atendimento";
-      sessao.etapa = "submenu_contatos";
-      await enviarMensagem(from, submenuContatos());
+      await enviarMensagem(from, "📞 Clique para ligar -> (15) 3011-1222 | (15) 3326-2222 ");
     }
     else if (text === "0") {
       sessao.etapa = "menu_principal";
@@ -106,20 +101,6 @@ app.post("/webhook", async (req, res) => {
     }
   }
 
-  // 🔹 SUBMENU CONTATOS
-  else if (sessao.etapa === "submenu_contatos") {
-    if (text === "9") {
-      sessao.etapa = sessao.etapaAnterior;
-      await enviarMensagem(from, submenuAtendimento());
-    }
-    else if (text === "0") {
-      sessao.etapa = "menu_principal";
-      await enviarMensagem(from, menuPrincipal());
-    }
-    else {
-      await enviarMensagem(from, submenuContatos());
-    }
-  }
 
   // 🔹 SUBMENU AJUDA
   else if (sessao.etapa === "submenu_ajuda") {
@@ -182,20 +163,8 @@ function submenuAtendimento() {
 
 1️⃣ - WhatsApp (Mensagem de Texto)
 2️⃣ - Ligação
-3️⃣ - Outros Contatos
 
 Digite o número desejado
-0️⃣ - Voltar ao menu principal`;
-}
-
-function submenuContatos() {
-  return `📱 *Mais contatos de atendimento por ligação:*
-
-☎ Telefone Fixo: (15) 3011-1222 | (15) 3326-2222
-📱 Celular: (15) 99105-8622
-
-Digite:
-9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
 
@@ -223,6 +192,7 @@ Digite:
 9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
+
 
 
 
