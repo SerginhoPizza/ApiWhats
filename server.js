@@ -72,13 +72,10 @@ app.post("/webhook", async (req, res) => {
   // 🔹 MENU PRINCIPAL
   if (sessao.etapa === "menu_principal") {
     if (text === "1") {
-      await enviarMensagem(from, mensagemCardapio());
-    } 
-    else if (text === "2") {
       sessao.etapa = "submenu_atendimento";
       await enviarMensagem(from, submenuAtendimento());
     } 
-    else if (text === "3") {
+    else if (text === "2") {
       sessao.etapa = "submenu_ajuda";
       await enviarMensagem(from, submenuAjuda());
     } 
@@ -93,7 +90,7 @@ app.post("/webhook", async (req, res) => {
       await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/5515991058622");
     }
     else if (text === "2") {
-      await enviarMensagem(from, "📞 Clique para ligar -> (15) 99603-2207");
+      await enviarMensagem(from, "📞 Clique para ligar -> tel:+5515996032207");
     }
     else if (text === "3") {
       sessao.etapaAnterior = "submenu_atendimento";
@@ -167,29 +164,17 @@ function menuPrincipal() {
 🍕 *Boas-vindo(a) ao Serginhos Pizza e Bar!*
 Que alegria ter você por aqui. Estamos prontos para preparar a melhor pizza para a sua noite!
 
-❔ *Como fazer seu pedido:*
-Para facilitar, escolha uma das opções abaixo digitando apenas o número correspondente. Se estiver em dúvida, a opção 3 foi feita para você! 
+Faça seu pedido pelo nosso cardápio online, basta clicar no link abaixo:
+site.anota.ai/Serginhospizzaria
 
-1️⃣ - Pedir pelo Cardápio Online
-2️⃣ - Falar com Atendente
-3️⃣ - Dúvidas! 
+Para mais opções, escolha um das opções abaixo:
+
+1️⃣ - Falar com Atendente
+2️⃣ - Dúvidas! 
 
 *Dica do Chef:* Ao escolher a opção, aguarde um segundinho que eu já te direciono!
 `;
   
-}
-
-
-function mensagemCardapio() {
-  return `Você escolheu a opção *Cardápio* 🍕
-
-Segue o link para pedidos:
-👉 site.anota.ai/Serginhospizzaria
-
-Caso tenha dúvidas, volte ao menu principal e escolha a opção *3* para te ajudarmos 😊
-
-Digite:
-0️⃣ - Voltar ao menu principal`;
 }
 
 function submenuAtendimento() {
@@ -238,6 +223,7 @@ Digite:
 9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
+
 
 
 
