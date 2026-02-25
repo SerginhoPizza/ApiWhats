@@ -10,6 +10,13 @@ app.use(express.json());
 
 const VERIFY_TOKEN = "meu_token_123";
 
+//Caminho do servidor
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
+
 // Rota GET (verificação da Meta)
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
@@ -34,22 +41,31 @@ app.post("/webhook", async (req, res) => {
 
   if (message) {
     const from = message.from;
-    const text = message.text?.body;
+    const text = message.text?.body?.trim();
 
     console.log("Mensagem recebida:", text);
 
-    // resposta automática simples
-    await enviarMensagem(from, "Olá! 👋 Recebemos sua mensagem.");
+    // Se for primeira mensagem ou texto diferente
+    if (!["1", "2", "3"].includes(text)) {
+      await enviarMensagem(from, menuPrincipal());
+    }
+
+    if (text === "1") {
+      await enviarMensagem(from, "Você escolheu Suporte 🛠️. Em breve um atendente falará com você.");
+    }
+
+    if (text === "2") {
+      await enviarMensagem(from, "Você escolheu Financeiro 💰. Como podemos ajudar?");
+    }
+
+    if (text === "3") {
+      await enviarMensagem(from, "Você escolheu Comercial 📈. Nossa equipe entrará em contato.");
+    }
   }
 
   res.sendStatus(200);
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
 
 //Enviar mensagem dentro das 24hrs
 async function enviarMensagem(to, text) {
@@ -68,6 +84,25 @@ async function enviarMensagem(to, text) {
     }
   );
 }
+
+//Menu automático
+function menuPrincipal() {
+  return `
+🍕 *Boas-vindo(a) ao Serginhos Pizza e Bar!*
+Que alegria ter você por aqui. Estamos prontos para preparar a melhor pizza para a sua noite!
+
+❔ *Como fazer seu pedido:*
+Para facilitar, escolha uma das opções abaixo digitando apenas o número correspondente. Se estiver em dúvida, a opção 3 foi feita para você! 
+
+1️⃣ - Pedir pelo Cardápio Online
+2️⃣ - Falar com Atendente
+3️⃣ - Primeira vez aqui? Me ajude! 
+
+*Dica do Chef:* Ao escolher a opção, aguarde um segundinho que eu já te direciono!
+`;
+  
+}
+
 
 
 
