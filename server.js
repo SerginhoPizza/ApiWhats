@@ -3,7 +3,7 @@ const TEMPO_EXPIRACAO = 15 * 60 * 1000; // 15 minutos
 
 const axios = require("axios");
 
-const TOKEN = "EAARbTE5PR8MBQ5Tm0bCbmhBGyZCH9J9tiZBczF0zyQYkRucxaAhjL1wLWQlN1WJIZAq1yHe8gxlu8ZBJTZAhTQ9Fim8aZCQfTZBakI8sMPkTj2pjsB8T5Gy6ZBgv7UBtgNvwjTZCZBVlwtPoLCUjhDkzlZBbjhOzjZAR9JuRsmhG5XXYZAIZCQZBwuHFVpUCmVkbSS0EnOXm6I1A2WgAaj7wqQfxPyCDhUocNYorB1fxyq2AVPDk43MTZCPVUoOnJRKzBciiZB820R76FJcXjCS2qWfUQmvcchH9crgZDZD";
+const TOKEN = "EAARbTE5PR8MBQwUV1jQZA27sCk3v1UUFm401yKfEW0mF8s6C7SBliR4PmDTwjlab0ouxRUidhBndKtmDI7Y5JFexAwnK1Vj0L59TXMk75ZCamvB7fDqAJ4iU4vInC1gXc4n1GrKsyGrAMjzMmqOJoAIz8ebFA34xDAnAoRrTo3hqYoYUo7ZCU9IcOo72DOw29lKAMgtkpXEr1TpusSewGfnPwT6yeZCf9SEGiFaAZCJwmLZA38GM89OI4MAQBWYGezuTsp2O1f4mZAPcj23foUY4khl";
 const PHONE_NUMBER_ID = "1066289309890791";
 
 const express = require("express");
@@ -142,6 +142,7 @@ Para facilitar, escolha uma das opções abaixo digitando apenas o número corre
 `;
   
 }
+
 
 
 
