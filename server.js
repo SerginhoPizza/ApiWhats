@@ -90,10 +90,10 @@ app.post("/webhook", async (req, res) => {
   // 🔹 SUBMENU ATENDIMENTO
   else if (sessao.etapa === "submenu_atendimento") {
     if (text === "1") {
-      await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/55XXXXXXXXX");
+      await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/5515991058622");
     }
     else if (text === "2") {
-      await enviarMensagem(from, "📞 Clique para ligar: tel:+55XXXXXXXXX");
+      await enviarMensagem(from, "📞 Clique para ligar -> +5515996032207");
     }
     else if (text === "3") {
       sessao.etapaAnterior = "submenu_atendimento";
@@ -172,7 +172,7 @@ Para facilitar, escolha uma das opções abaixo digitando apenas o número corre
 
 1️⃣ - Pedir pelo Cardápio Online
 2️⃣ - Falar com Atendente
-3️⃣ - Primeira vez aqui? Me ajude! 
+3️⃣ - Dúvidas! 
 
 *Dica do Chef:* Ao escolher a opção, aguarde um segundinho que eu já te direciono!
 `;
@@ -206,8 +206,8 @@ Digite o número desejado
 function submenuContatos() {
   return `📱 *Mais contatos de atendimento por ligação:*
 
-☎ Telefone Fixo: (XX) XXXX-XXXX
-📱 Celular: (XX) XXXXX-XXXX
+☎ Telefone Fixo: (15) 3011-1222 | (15) 3326-2222
+📱 Celular: (15) 99105-8622
 
 Digite:
 9️⃣ - Voltar ao menu anterior
@@ -215,7 +215,7 @@ Digite:
 }
 
 function submenuAjuda() {
-  return `🙋 *Primeira vez aqui?*
+  return `🙋 *Dúvidas*
 
 📌 *Por que usamos atendimento automático?*
 Devido ao alto volume de pedidos por mensagens, o WhatsApp estava bloqueando nosso atendimento humano.
@@ -232,12 +232,13 @@ Pensando em melhorar sua experiência, automatizamos este número via WhatsApp O
 🎁 *Programa Fidelidade*
 A cada 10 pedidos, no 11º você ganha 50% de desconto em uma pizza de qualquer sabor.
 Para resgatar, ao finalizar o 11º pedido aparecerá a opção de resgate.
-Para consultar seus pontos, volte ao menu principal e escolha a opção 2.
+Para consultar seus pontos, volte ao menu principal e escolha a opção 2 e entre contato conosco.
 
 Digite:
 9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
+
 
 
 
