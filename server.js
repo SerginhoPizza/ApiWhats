@@ -87,7 +87,7 @@ app.post("/webhook", async (req, res) => {
   // 🔹 SUBMENU ATENDIMENTO
   else if (sessao.etapa === "submenu_atendimento") {
     if (text === "1") {
-      await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/5515991058622");
+      await enviarMensagem(from, "👉 Entre em contato via WhatsApp: https://wa.me/5515988440049");
     }
     else if (text === "2") {
       await enviarMensagem(from, "📞 Clique para ligar -> (15) 3011-1222 | (15) 3326-2222 ");
@@ -192,6 +192,7 @@ Digite:
 9️⃣ - Voltar ao menu anterior
 0️⃣ - Voltar ao menu principal`;
 }
+
 
 
 
